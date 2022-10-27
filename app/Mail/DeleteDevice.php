@@ -2,16 +2,15 @@
 
 namespace App\Mail;
 
+use App\Models\Device;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Device;
-use Symfony\Component\ErrorHandler\Debug;
 
-class ExampleMail extends Mailable
+class DeleteDevice extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -35,7 +34,7 @@ class ExampleMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Dispositivo Creado',
+            subject: 'Dispositivo Eliminado',
         );
     }
 
@@ -47,7 +46,7 @@ class ExampleMail extends Mailable
     public function content()
     {
         return new Content(
-            view: 'mails.example',
+            view: 'mails.delete',
         );
     }
 
@@ -59,10 +58,5 @@ class ExampleMail extends Mailable
     public function attachments()
     {
         return [];
-    }
-
-    public function build()
-    {
-        return $this->view('mails.example');
     }
 }

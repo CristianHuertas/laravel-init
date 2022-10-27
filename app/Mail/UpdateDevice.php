@@ -8,19 +8,23 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use App\Models\Device;
+
 
 class UpdateDevice extends Mailable
 {
     use Queueable, SerializesModels;
+
+    public $device;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Device $device)
     {
-        //
+        $this->device = $device;
     }
 
     /**
@@ -31,7 +35,7 @@ class UpdateDevice extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Update Device',
+            subject: 'Dispositivo Modificado',
         );
     }
 
@@ -43,7 +47,7 @@ class UpdateDevice extends Mailable
     public function content()
     {
         return new Content(
-            view: 'view.name',
+            view: 'mails.update',
         );
     }
 

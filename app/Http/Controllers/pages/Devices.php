@@ -9,6 +9,8 @@ use App\Models\Type;
 use App\Models\So;
 use Illuminate\Support\Facades\Storage;
 use App\Mail\ExampleMail;
+use App\Mail\UpdateDevice;
+use App\Mail\DeleteDevice;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -18,7 +20,7 @@ class Devices extends Controller
   public function index()
   {
     $device = Device::all();
-    $type= Type::all();
+    $type = Type::all();
 
     //dd($type);
     return view('content.pages.devices', ['devices' => $device, 'type' => $type]);
@@ -132,6 +134,10 @@ class Devices extends Controller
     $devices->total_slots = $request->total_slots ?? null;
     $devices->history = $request->history ?? null;
     $devices->save();
+
+    //enviar email
+    Mail::to('cristian.huertas0@gmail.com')->send(new UpdateDevice($devices));
+
     return redirect()->route('pages-devices');
   }
 
@@ -139,6 +145,9 @@ class Devices extends Controller
   {
     $devices = Device::find($request->devices_id);
     $devices->delete();
+
+    //enviar email
+    Mail::to('cristian.huertas0@gmail.com')->send(new DeleteDevice($devices));
     return redirect()->route('pages-devices');
   }
 
@@ -149,5 +158,4 @@ class Devices extends Controller
     $devices_id->save();
     return redirect()->route('pages-devices');
   }
-  
 }
