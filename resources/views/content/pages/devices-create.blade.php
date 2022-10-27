@@ -42,9 +42,17 @@ $configData = Helper::appClasses();
     <div class="col-lg-12">
         <h4>Crear Dispositivo Nuevo</h4>
 
-        <form class="row g-1" method="POST" action="{{ route('pages-devices-store') }}">
+        <form class="row g-1" method="POST" action="{{ route('pages-devices-store') }}" enctype="multipart/form-data">
+            {{-- enctype="multipart/form-data" tipo de formulario para imagenes --}}
+
             @csrf
 
+            <div class="col-6">
+                <label for="inputAddress" class="form-label">Imagen del Dispositivo</label>
+                <input type="file" name="fileLogo" class="form-control" id="">
+            </div>
+
+            
             <div class="mb-2">{{-- Selector con iconos --}}
                 <label for="selectpickerIcons" class="form-label">Tipo de Dispositivo</label>
 
@@ -56,6 +64,7 @@ $configData = Helper::appClasses();
                     @endforeach
                 </select>
             </div>
+
             <div class="mb-2">{{-- Selector con iconos --}}
                 <label for="selectpickerIcons" class="form-label">Tipo de sistema operativo</label>
 
@@ -106,7 +115,7 @@ $configData = Helper::appClasses();
             </div>
             <div class="col-md-6">
                 <label for="inputEmail4" class="form-label">stock</label>
-                <input type="number" name="stock" class="form-control" id="inputEmail4">
+                <input type="number" name="stock" class="form-control" id="inputEmail4" required>
             </div>
             <div class="col-md-6">
                 <label for="inputEmail4" class="form-label">hdd</label>

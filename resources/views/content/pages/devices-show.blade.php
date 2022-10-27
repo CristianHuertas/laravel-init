@@ -42,8 +42,10 @@ $configData = Helper::appClasses();
     <div class="col-lg-12">
         <h4>Editar Dispositivo</h4>
 
-        <form class="row g-1" method="POST" action="{{ route('pages-devices-update') }}  ">
-            {{-- enctype= "multipart/form-data" tipo de formulario para imagenes --}}
+        <form class="row g-1" method="POST" action="{{ route('pages-devices-update') }}" enctype="multipart/form-data">
+            {{-- enctype="multipart/form-data" tipo de formulario para imagenes --}}
+            <img src="{{ $devices->image_url}}" alt="" style="width: 100px">
+            <p></p>
             @csrf
             {{-- <input type="hidden" name="type_id" value="{{ $types }}"> --}}
             <input type="hidden" name="devices_id" value="{{ $devices->id }}">

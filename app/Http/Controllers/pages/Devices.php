@@ -7,17 +7,21 @@ use Illuminate\Http\Request;
 use App\Models\Device;
 use App\Models\Type;
 use App\Models\So;
-use Illuminate\Contracts\Cache\Store;
-use Illuminate\Support\Facades\hash;
 use Illuminate\Support\Facades\Storage;
-use League\Flysystem\UrlGeneration\PublicUrlGenerator;
+use App\Mail\ExampleMail;
+use Illuminate\Support\Facades\Mail;
+
+
 
 class Devices extends Controller
 {
   public function index()
   {
     $device = Device::all();
-    return view('content.pages.devices', ['devices' => $device]);
+    $type= Type::all();
+
+    //dd($type);
+    return view('content.pages.devices', ['devices' => $device, 'type' => $type]);
   }
 
   public function create()
@@ -37,6 +41,17 @@ class Devices extends Controller
 
 
     $devices = new Device();
+
+    if ($request->hasFile('fileLogo')) {
+      $file = $request->file('fileLogo');
+      $name = time() . $file->getClientOriginalName();
+      $filePath = 'public/' . $name;
+      Storage::put($filePath, file_get_contents($file));
+
+      $url = Storage::url($filePath);
+      $devices->image_url = $url;
+    }
+
     $devices->tipe_id = $request->type_id;
     $devices->sos_id = $request->sos_id;
     $devices->name = $request->name;
@@ -55,6 +70,12 @@ class Devices extends Controller
     $devices->total_slots = $request->total_slots ?? null;
     $devices->history = $request->history ?? null;
     $devices->save();
+
+    //Mandar Mail
+    Mail::to('cristian.huertas0@gmail.com')->send(new ExampleMail($devices));
+
+
+
     return redirect()->route('pages-devices');
   }
 
@@ -74,7 +95,7 @@ class Devices extends Controller
     //dd($sos);
 
 
-    return view('content.pages.devices-show', ['devices' => $devices , 'types_activos' => $types_activos , 'types' => $types, 'sos' => $sos, 'sos_encontrado' => $sos_encontrado]);
+    return view('content.pages.devices-show', ['devices' => $devices, 'types_activos' => $types_activos, 'types' => $types, 'sos' => $sos, 'sos_encontrado' => $sos_encontrado]);
   }
 
   public function update(Request $request)
@@ -86,13 +107,13 @@ class Devices extends Controller
     if ($request->hasFile('fileLogo')) {
       $file = $request->file('fileLogo');
       $name = time() . $file->getClientOriginalName();
-      $filePath = 'public/'. $name;
+      $filePath = 'public/' . $name;
       Storage::put($filePath, file_get_contents($file));
 
       $url = Storage::url($filePath);
       $devices->image_url = $url;
     }
-    
+
     $devices->tipe_id = $request->type_id;
     $devices->sos_id = $request->sos_id;
     $devices->name = $request->name;
@@ -128,4 +149,5 @@ class Devices extends Controller
     $devices_id->save();
     return redirect()->route('pages-devices');
   }
+  
 }
