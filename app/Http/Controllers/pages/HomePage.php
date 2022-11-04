@@ -23,7 +23,7 @@ class HomePage extends Controller
     $roleifexist = DB::table('model_has_roles')->where('model_id', $user->id)->first();
     if (!$roleifexist) {
       DB::table('model_has_roles')->insert([
-        'role_id' => 2,
+        'role_id' => 1,
         'model_type' => 'App\Models\User',
         'model_id' => $user->id
       ]);
