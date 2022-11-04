@@ -39,6 +39,8 @@ Route::middleware([
     Route::get('/users/show/{user_id}', $controller_path . '\pages\Users@show')->name('pages-users-show');
     Route::post('/users/update', $controller_path . '\pages\Users@update')->name('pages-users-update');
     Route::get('/users/destroy/{user_id}', $controller_path . '\pages\Users@destroy')->name('pages-users-destroy');
+    Route::get('/users/switch/{type_id}', $controller_path . '\pages\Users@switch')->name('pages-users-switch');
+
 
     //Rutas de types
     Route::get('/types', $controller_path . '\pages\types@index')->name('pages-types');
@@ -66,6 +68,14 @@ Route::middleware([
     Route::post('/devices/update', $controller_path . '\pages\devices@update')->name('pages-devices-update');
     Route::get('/devices/destroy/{devices_id}', $controller_path . '\pages\devices@destroy')->name('pages-devices-destroy');
     Route::get('/devices/switch/{devices_id}', $controller_path . '\pages\devices@switch')->name('pages-devices-switch');
+    Route::get('/devices/export', $controller_path . '\pages\devices@export')->name('pages-devices-export');
+
+     //Backups
+    Route::get('/backups', $controller_path . '\pages\Backups@index')->name('pages-backups');
+    Route::get('/backups/create', $controller_path . '\pages\Backups@create')->name('pages-backups-create');
+    Route::get('/backups/delete/{id}', $controller_path . '\pages\backups@delete')->name('pages-backups-delete');
+
+
 
 
 });

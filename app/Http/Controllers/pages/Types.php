@@ -45,6 +45,7 @@ class Types extends Controller
 
   public function update(Request $request)
   {
+    //dd($request);
     $type = Type::find($request->type_id);
     //dd( $type->active);
 

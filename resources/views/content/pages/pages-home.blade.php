@@ -63,7 +63,7 @@ $configData = Helper::appClasses();
                                 class="bx bx-purchase-tag fs-3"></i></span>
                     </div>
                     <span class="d-block mb-1 text-nowrap">Bachups</span>
-                    <h2 class="mb-0">0</h2>
+                    <h2 class="mb-0">{{ $n_backup }}</h2>
                 </div>
             </div>
         </div>

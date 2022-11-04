@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\pages;
 
+use App\Exports\DeviceExport;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Device;
@@ -12,8 +13,7 @@ use App\Mail\ExampleMail;
 use App\Mail\UpdateDevice;
 use App\Mail\DeleteDevice;
 use Illuminate\Support\Facades\Mail;
-
-
+use Maatwebsite\Excel\Facades\Excel;
 
 class Devices extends Controller
 {
@@ -157,5 +157,13 @@ class Devices extends Controller
     $devices_id->active = !$devices_id->active;
     $devices_id->save();
     return redirect()->route('pages-devices');
+  }
+
+
+  public function export()
+  {
+
+    return Excel::download(new DeviceExport, 'dispositivos.xlsx');
+    //return Excel::download(new DeviceExport, "dispositivos.xlsx");
   }
 }

@@ -5,15 +5,20 @@ namespace App\Http\Controllers\pages;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\hash;
-use League\Flysystem\UrlGeneration\PublicUrlGenerator;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\PermissionRegistrar;
 
 class Users extends Controller
 {
   public function index()
   {
+
+    $users_model = DB::table('model_has_roles')->get();
+
     $users = User::all();
-    return view('content.pages.users', ['users' => $users]);
+    return view('content.pages.users', ['users' => $users, 'users_model' => $users_model]);
   }
 
   public function create()
@@ -24,9 +29,9 @@ class Users extends Controller
   public function store(Request $request)
   {
     $validator = $request->validate([
-      'name'=> 'required',
-      'email'=> 'required',
-      'password'=> 'required'
+      'name' => 'required',
+      'email' => 'required',
+      'password' => 'required'
     ]);
     $user = new User();
     $user->name = $request->name;
@@ -67,6 +72,24 @@ class Users extends Controller
   {
     $user = User::find($request->user_id);
     $user->delete();
+    return redirect()->route('pages-users');
+  }
+
+  public function switch($model_id)
+  {
+    $model_has_roles = DB::table('model_has_roles')->where('model_id', $model_id)->first();
+    //dd($model_has_roles);
+    if ($model_has_roles->role_id == 1) {
+    $model_has_roles = DB::table('model_has_roles')->where('model_id', $model_id)->update(['role_id' => 2]);
+
+    } else {
+      $model_has_roles = DB::table('model_has_roles')->where('model_id', $model_id)->update(['role_id' => 1]);
+
+    }
+
+    //$model_has_roles = DB::table('model_has_roles')->where('model_id', $model_id)->first();
+
+
     return redirect()->route('pages-users');
   }
 }
